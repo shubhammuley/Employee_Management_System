@@ -1,7 +1,10 @@
 ﻿using BaseLibrary.DTOs;
 using BaseLibrary.Entities;
 using BaseLibrary.Responses;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Microsoft.Extensions.Options;
 using ServerLibrary.Data;
 using ServerLibrary.Helpers;
@@ -19,7 +22,14 @@ namespace ServerLibrary.repositories.Implementations
 
             if (checkUser != null) return new GeneralResponse(false, "User registered already.");
 
-            return null;
+            //Save User
+            var ApplicationUser = await AddToDatabase(new ApplicationUser()
+            {
+                FullName = user.FullName,
+                Email = user.Email,
+                Password = BCrypt.Net.BCrypt.HashPassword(user.Password)
+            }
+            ) ;
         }
 
         private async Task<ApplicationUser> FindUserByEmail(string? email) =>
@@ -31,6 +41,13 @@ namespace ServerLibrary.repositories.Implementations
         public Task<LoginResponse> SignInAsync(Login user)
         {
             throw new NotImplementedException();
+        }
+
+        private async Task<T> AddToDatabase<T>(T model)
+        {
+            var result = appDbContext.Add(model);
+            await appDbContext.SaveChangesAsync();
+            return (T)result.Entity;
         }
 
         
