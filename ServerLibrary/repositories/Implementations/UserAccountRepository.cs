@@ -18,6 +18,8 @@ namespace ServerLibrary.repositories.Implementations
             var checkUser = await FindUserByEmail(user.Email!);
 
             if (checkUser != null) return new GeneralResponse(false, "User registered already.");
+
+            return null;
         }
 
         private async Task<ApplicationUser> FindUserByEmail(string? email) =>
