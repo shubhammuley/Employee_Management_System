@@ -21,7 +21,7 @@ namespace Server.Controllers
         public async Task<IActionResult> SignInAsync(Login user)
         {
             if (User is null) return BadRequest("Model is empty");
-            var result = await SignInAsync(user);
+            var result = await accountInterface.SignInAsync(user);
             return Ok(result);  
         }
     }
