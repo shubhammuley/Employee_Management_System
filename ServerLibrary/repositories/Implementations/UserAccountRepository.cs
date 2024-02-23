@@ -35,25 +35,19 @@ namespace ServerLibrary.repositories.Implementations
 
             //check, create and assign role
 
-            var checkAdminRole = await appDbContext.systemRoles.FirstOrDefaultAsync(u => u.Name != (Helpers.Constants.Admin));
+            var checkAdminRole = await appDbContext.systemRoles.FirstOrDefaultAsync(u => u.Name!.Equals(Helpers.Constants.Admin));
             if (checkAdminRole is null)
             {
                 var createAdminRole = await AddToDatabase(new SystemRole() { Name = Helpers.Constants.Admin });
-                await AddToDatabase(new UserRole()
-                {
-                    RoleId = createAdminRole.Id,
-                    UserId = ApplicationUser.Id
-                });
+                await AddToDatabase(new UserRole(){RoleId = createAdminRole.Id,UserId = ApplicationUser.Id});
                 return new GeneralResponse(true, "Account Created");
             }
 
-            var checkUserRole = await appDbContext.systemRoles.FirstOrDefaultAsync(u => u.Name != Helpers.Constants.User);
+            var checkUserRole = await appDbContext.systemRoles.FirstOrDefaultAsync(u => u.Name!.Equals (Helpers.Constants.User));
             SystemRole response = new();
-            if (checkUserRole is null)
-            {
+            if (checkUserRole is null){
                 response = await AddToDatabase(new SystemRole() { Name = Helpers.Constants.User });
                 await AddToDatabase(new UserRole() { RoleId = response.Id, UserId = ApplicationUser.Id });
-
             }
             else
             {
@@ -63,11 +57,12 @@ namespace ServerLibrary.repositories.Implementations
             return new GeneralResponse(true, "Account Created");
         }
 
-        private async Task<ApplicationUser> FindUserByEmail(string? email) =>
-            await appDbContext.ApplicationUsers.FirstOrDefaultAsync(
-                u=>u.Email!.ToLower()!.Equals(email!.ToLower()) 
+        private async Task<ApplicationUser> FindUserByEmail(string? email)
+        {
+            return await appDbContext.ApplicationUsers.FirstOrDefaultAsync(
+                u => u.Email!.ToLower()!.Equals(email!.ToLower())
                 );
-       
+        }
 
         public Task<LoginResponse> SignInAsync(Login user)
         {
