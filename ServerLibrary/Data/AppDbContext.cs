@@ -15,6 +15,7 @@ namespace ServerLibrary.Data
 
         public DbSet<SystemRole> systemRoles { get; set; }
         public DbSet<UserRole> userRoles { get; set; }
+        public DbSet<RefreshTokenInfo> RefreshTokenInfos { get; set; }
 
 
 
