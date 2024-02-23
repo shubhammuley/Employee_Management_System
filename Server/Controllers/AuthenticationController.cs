@@ -16,5 +16,13 @@ namespace Server.Controllers
             var result = await accountInterface.CreateAsync(User);
             return Ok(result);
         }
+
+        [HttpPost("Login")]
+        public async Task<IActionResult> SignInAsync(Login user)
+        {
+            if (User is null) return BadRequest("Model is empty");
+            var result = await SignInAsync(user);
+            return Ok(result);  
+        }
     }
 }
