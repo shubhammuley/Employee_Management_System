@@ -114,10 +114,10 @@ namespace ServerLibrary.repositories.Implementations
                 new Claim(ClaimTypes.Email, user.Email!)
             };
             var token = new JwtSecurityToken(
-                config.Value.Issuer,
-                config.Value.Audience,
+                issuer : config.Value.Issuer,
+                audience :config.Value.Audience,
                 claims: UserClaims,
-                expires: DateTime.Today,
+                expires: DateTime.Now.AddDays(1),
                 signingCredentials: credentials);
 
             return new JwtSecurityTokenHandler().WriteToken(token);
