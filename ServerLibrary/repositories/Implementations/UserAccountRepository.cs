@@ -117,8 +117,9 @@ namespace ServerLibrary.repositories.Implementations
                 issuer : config.Value.Issuer,
                 audience :config.Value.Audience,
                 claims: UserClaims,
-                expires: DateTime.Now.AddDays(1),
-                //expires: DateTime.Now.AddSeconds(2),
+                //expires: DateTime.Now.AddDays(1),
+                expires: DateTime.Now.AddSeconds(30),
+
                 signingCredentials: credentials);
 
             return new JwtSecurityTokenHandler().WriteToken(token);
