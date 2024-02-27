@@ -1,6 +1,6 @@
 ﻿@page "/identity/account/login"
 <div class="container">
-    <div class="row"I
+    <div class="row" I
         <div class="col-lg-6">
             <EditForm Enhance Model="User" OnValidSubmit="HandleLogin">
             <DataAnnotationsValidator />
@@ -28,16 +28,16 @@
 </div>
 
 
-@code{
+@code {
     Login User = new();
 
     async Task HandleLogin()
     {
         var result = await accountService.SignInAsync(User);
-        if(result.flag)
+        if (result.flag)
         {
             var customAuthStateProvider = (CustomAuthenticationStateProvider)AuthStateProvider;
-            await customAuthStateProvider.UpdateAuthenticationState(new UserSession(){Token = result.Token, RefreshToken = result.RefreshToken});
+            await customAuthStateProvider.UpdateAuthenticationState(new UserSession() { Token = result.Token, RefreshToken = result.RefreshToken });
             NavManager.NavigateTo("/", forceLoad: true);
         }
     }
