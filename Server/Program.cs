@@ -40,6 +40,9 @@ builder.Services.AddAuthentication(options => {
         ValidateLifetime = true,
         ValidIssuer = jwtSection!.Issuer,
         ValidAudience = jwtSection!.Audience,
+        
+        // added clockskew to expire the token on time 
+        ClockSkew = TimeSpan.Zero,
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSection.Key!))
     };
 });
