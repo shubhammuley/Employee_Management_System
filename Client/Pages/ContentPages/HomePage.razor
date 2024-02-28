@@ -1,0 +1,26 @@
+﻿@page "/home/dashboard"
+@layout MainLayout
+
+<h1>Home page</h1>
+
+
+@code {
+    [CascadingParameter] public Task<AuthenticationState> AuthenticationState { get; set; }
+
+    protected async override Task OnInitializedAsync()
+    {
+        await checkUserAuthentication();
+    }
+
+    private async Task checkUserAuthentication()
+    {
+        var user = (await AuthenticationState).User;
+        var isUserAuthenticated = user.Identity!.IsAuthenticated;
+
+        if(!isUserAuthenticated)
+        {
+            NavManager.NavigateTo("/identity/account/login");
+        }
+
+    }
+}
