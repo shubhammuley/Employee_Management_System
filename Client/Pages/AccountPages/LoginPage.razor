@@ -70,7 +70,6 @@
     public bool showLoadingButton { get; set; } = false;
     Login User = new();
 
-
     [CascadingParameter] public Task<AuthenticationState> AuthenticationState    { get; set; }
 
     protected async override Task OnInitializedAsync()
@@ -101,11 +100,14 @@
         await DialogService.AlertAsync(content, title);
     }
 
+
+    //Check user authentication and redirect appropriately 
     private async Task checkUserAuthentication()
     {
         var user = (await AuthenticationState).User;
         var isUserAuthenticated = user.Identity!.IsAuthenticated;
 
+        //If authenticated, navigate to dashboard
         if (isUserAuthenticated)
         {
             NavManager.NavigateTo("/home/dashboard");
